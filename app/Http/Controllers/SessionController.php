@@ -31,7 +31,8 @@ class SessionController extends Controller
 
     public function create2(Session $session)
     {
-        $movements = Movement::where('session_id', $session->id)->get();
+        $movements = Movement::where('session_id', $session->id)->
+        orderBy('order', 'ASC')->get();
         $account = Account::where('id', $session->account_id);
         return view('create_session2', 
         ['session' => $session, 'account' => $account, 'movements' => $movements]);
@@ -68,8 +69,6 @@ class SessionController extends Controller
             'movement_type' => 'required'
         ]);
 
-        //$movements = Movement::where('session_id', $session->id)->count();
-
         $m = new Movement;
         $m->movement_type = $validated_content['movement_type'];
         $m->session_id = $session->id;
@@ -84,6 +83,33 @@ class SessionController extends Controller
         $account = Account::where('id', $session->account_id)->first();
         return redirect(route('show.account', ['account' => $account]));
     }
+
+    public function move_down(Session $session, Movement $movement)
+    {
+        $movement_to_go_up = Movement::where('session_id', $session->id)
+        ->where('order', ($movement->order - 1))->first();
+        $movement_to_go_up->order = $movement_to_go_up->order + 1;
+        $movement_to_go_up->save();
+
+        $movement->order = $movement->order - 1;
+        $movement->save();
+        
+        return redirect(route('create.session2', ['session' => $session]));
+    }
+
+    public function move_up(Session $session, Movement $movement)
+    {
+        $movement_to_go_down = Movement::where('session_id', $session->id)
+        ->where('order', ($movement->order + 1))->first();
+        $movement_to_go_down->order = $movement_to_go_down->order - 1;
+        $movement_to_go_down->save();
+
+        $movement->order = $movement->order + 1;
+        $movement->save();
+        
+        return redirect(route('create.session2', ['session' => $session]));
+    }
+
 
 
     /**

@@ -12,7 +12,8 @@ class Session extends Model
         'task_type',
         'session_status',
         'session_date',
-        'session_time'
+        'session_time',
+        'message'
     ];
 
     public function account(){

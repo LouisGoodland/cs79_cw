@@ -20,9 +20,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Routes used by API
 Route::get('collect_sessions/{account}', [AccountController::class, 'collect'])
 ->name("collect.sessions");
+//Route that is used to update the movement status
 
+//Routes used by doctors
 Route::get('/view/{account}', [AccountController::class, 'show'])
 ->name("show.account")->middleware('auth');
 Route::get('/view/redirect/{session}', [SessionController::class, 'redirect_to_account'])
@@ -38,13 +41,10 @@ Route::get('view/{session}/add_session2', [SessionController::class, 'create2'])
 Route::post('view/{session}/add_session2/store', [SessionController::class, 'store2'])
 ->name("store.session2")->middleware('auth');
 
-/*
-Route::get('/edit/{account}', [AccountController::class, 'edit'])
-->name("edit.account")->middleware('auth');
-
-Route::post('/edit/{account}/update', [AccountController::class, 'update'])
-->name("update.account")->middleware('auth');
-*/
+Route::get('view/{session}/{movement}/down', [SessionController::class, 'move_down'])
+->name("move_down")->middleware('auth');
+Route::get('view/{session}/{movement}/up', [SessionController::class, 'move_up'])
+->name("move_up")->middleware('auth');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

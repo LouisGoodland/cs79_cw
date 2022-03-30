@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time("session_time");
             $table->integer("task_type");
             $table->enum('session_status', ['Not Started', 'Started', 'Complete']);
+            $table->string('message')->nullable();
 
             $table->unsignedBigInteger('account_id');
             $table->foreign('account_id')->references('id')->on('accounts')
