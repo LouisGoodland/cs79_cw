@@ -1,4 +1,37 @@
-<h1>session:</h1>
+<h1>Edit Session:</h1>
+
+
+
+<form method="POST" action={{ route('edit.session.store', ['session' => $session]) }} enctype="multipart/form-data">
+    @csrf
+
+    <div class="row">
+        <p>Date of Session:   <input type="date" name="date"></p>
+    </div>
+
+    <div class="row">
+        <p>Time of Session:   <input type="time" name="time"></p>
+    </div>
+    
+    <div class="row">
+        <label for="task_type">Task Type:</label>
+            <select name="task_type">
+                <option value="0">Kit</option>
+                <option value="1">Phone</option>
+            </select>
+    </div>
+    <div class="row">
+        <br>
+    </div>
+    <p>Message:     <input type="text" name="message"></p>
+    <br>
+
+    <input type="submit" value="Apply Changes">
+
+</form>
+
+
+
 @foreach ($movements as $movement)
     <p>{{$movement->movement_type}}, {{$movement->order}}</p>
     @if ($movement->order > 0)
@@ -10,7 +43,7 @@
     <br>
     
 @endforeach
-<form method="POST" action={{ route('store.session2', ['session' => $session]) }} enctype="multipart/form-data">
+<form method="POST" action={{ route('add.movement', ['session' => $session]) }} enctype="multipart/form-data">
     @csrf
     <div class="row">
         <label for="movement_type">Movement Type:</label>

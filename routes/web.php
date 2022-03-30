@@ -20,27 +20,34 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Routes used by API
+//routes used by API
 Route::get('collect_sessions/{account}', [AccountController::class, 'collect'])
 ->name("collect.sessions");
 //Route that is used to update the movement status
 
-//Routes used by doctors
+//account viewing
 Route::get('/view/{account}', [AccountController::class, 'show'])
 ->name("show.account")->middleware('auth');
 Route::get('/view/redirect/{session}', [SessionController::class, 'redirect_to_account'])
 ->name("session.redirect")->middleware('auth');
 
+//initial session creation
 Route::get('view/{account}/add_session', [SessionController::class, 'create'])
 ->name("create.session")->middleware('auth');
 Route::post('view/{account}/add_session/store', [SessionController::class, 'store'])
 ->name("store.session")->middleware('auth');
 
-Route::get('view/{session}/add_session2', [SessionController::class, 'create2'])
-->name("create.session2")->middleware('auth');
-Route::post('view/{session}/add_session2/store', [SessionController::class, 'store2'])
-->name("store.session2")->middleware('auth');
+//session manipulation
+Route::get('view/{session}/edit_session', [SessionController::class, 'create2'])
+->name("edit.session")->middleware('auth');
+Route::post('view/{session}/edit_session/store', [SessionController::class, 'store2'])
+->name("edit.session.store")->middleware('auth');
+Route::post('view/{session}/edit_session/add_movement', [SessionController::class, 'store3'])
+->name("add.movement")->middleware('auth');
+Route::get('/view/{session}/delete', [SessionController::class, 'destroy'])
+->name("destroy.session")->middleware('auth');
 
+//moving order of movements
 Route::get('view/{session}/{movement}/down', [SessionController::class, 'move_down'])
 ->name("move_down")->middleware('auth');
 Route::get('view/{session}/{movement}/up', [SessionController::class, 'move_up'])

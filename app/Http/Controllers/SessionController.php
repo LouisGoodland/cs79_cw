@@ -60,10 +60,34 @@ class SessionController extends Controller
         $s->account_id = $account->id;
         $s->save();
         
-        return redirect(route('create.session2', ['session' => $s]));
+        return redirect(route('edit.session', ['session' => $s]));
     }
 
     public function store2(Request $request, Session $session)
+    {
+
+        if($request->date!=null){
+            $session->session_date = $request->date;
+        }
+        if($request->task_type!=null){
+            $session->task_type = $request->task_type;
+        }
+        if($request->time!=null){
+            $session->session_time = $request->time;
+        }
+        if($request->message!=null){
+            $session->message = $request->message;
+        }
+        
+        //$session->task_type = $validated_content['task_type'];
+        //$session->session_time = $validated_content['time'];
+        //$session->message = $validated_content['message'];
+        $session->save();
+        
+        return redirect(route('edit.session', ['session' => $session]));
+    }
+
+    public function store3(Request $request, Session $session)
     {
         $validated_content = $request->validate([
             'movement_type' => 'required'
@@ -75,7 +99,7 @@ class SessionController extends Controller
         $m->order = Movement::where('session_id', $session->id)->count();
 
         $m->save();
-        return redirect(route('create.session2', ['session' => $session]));
+        return redirect(route('edit.session', ['session' => $session]));
     }
 
     public function redirect_to_account(Session $session)
@@ -94,7 +118,7 @@ class SessionController extends Controller
         $movement->order = $movement->order - 1;
         $movement->save();
         
-        return redirect(route('create.session2', ['session' => $session]));
+        return redirect(route('edit.session', ['session' => $session]));
     }
 
     public function move_up(Session $session, Movement $movement)
@@ -107,7 +131,7 @@ class SessionController extends Controller
         $movement->order = $movement->order + 1;
         $movement->save();
         
-        return redirect(route('create.session2', ['session' => $session]));
+        return redirect(route('edit.session', ['session' => $session]));
     }
 
 
@@ -152,8 +176,11 @@ class SessionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Session $session)
     {
-        //
+        $account = Account::where('id', $session->account_id)->first();
+        $session->delete();
+
+        return redirect(route('show.account', ['account' => $account]));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Session;
+use App\Models\Movement;
 
 use Illuminate\Http\Request;
 
