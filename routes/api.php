@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('collect_sessions/{account}', [AccountController::class, 'collect'])
 ->name("collect.sessions");
+Route::get('collect_sessions/singular/{session}', [SessionController::class, 'collect_session'])
+->name("collect.session");
 
 Route::get('set_session_status/complete/{session}', [SessionController::class, 'update_status_complete'])
 ->name("update.session.status.complete");

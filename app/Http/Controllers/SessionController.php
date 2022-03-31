@@ -23,6 +23,11 @@ class SessionController extends Controller
         return $session->toJson();
     }
 
+    public function collect_session(Session $session)
+    {
+        return $session->toJson();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
