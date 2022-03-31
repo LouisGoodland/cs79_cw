@@ -9,7 +9,19 @@ use App\Models\Movement;
 
 class SessionController extends Controller
 {
-    
+    public function update_status_complete(Session $session)
+    {
+        $session->session_status = 'Complete';
+        $session->save();
+        return $session->toJson();
+    }
+
+    public function update_status_doing(Session $session)
+    {
+        $session->session_status = 'Started';
+        $session->save();
+        return $session->toJson();
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -130,7 +142,7 @@ class SessionController extends Controller
     {
         $movements_to_go_down = Movement::where('session_id', $session->id)
         ->where('order', '>', $movement->order);
-        
+
         foreach($movements_to_go_down as $m)
         {
             $m->order = $m->order - 1;

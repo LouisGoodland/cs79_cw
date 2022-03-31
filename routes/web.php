@@ -20,9 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//routes used by API
-
-//Route that is used to update the movement status
 
 //account creations
 Route::get('/create_account', function () {
