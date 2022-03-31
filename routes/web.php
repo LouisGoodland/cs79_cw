@@ -21,8 +21,7 @@ Route::get('/', function () {
 });
 
 //routes used by API
-Route::get('collect_sessions/{account}', [AccountController::class, 'collect'])
-->name("collect.sessions");
+
 //Route that is used to update the movement status
 
 //account creations
