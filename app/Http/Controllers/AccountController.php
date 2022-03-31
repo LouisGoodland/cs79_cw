@@ -37,7 +37,13 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated_content = $request->validate([
+            'account' => 'required'
+        ]);
+        $a = new Account;
+        $a->name = $validated_content['account'];
+        $a->save();
+        return redirect(route('show.account', ['account' => $a]));
     }
 
     /**
