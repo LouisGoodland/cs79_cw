@@ -9,15 +9,7 @@ use App\Models\Movement;
 
 class SessionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -134,40 +126,18 @@ class SessionController extends Controller
         return redirect(route('edit.session', ['session' => $session]));
     }
 
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function delete_movement(Session $session, Movement $movement)
     {
-        //
-    }
+        $movements_to_go_down = Movement::where('session_id', $session->id)
+        ->where('order', '>', $movement->order);
+        
+        foreach($movements_to_go_down as $m)
+        {
+            $m->order = $m->order - 1;
+            $m->save();
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $movement->delete();
     }
 
     /**

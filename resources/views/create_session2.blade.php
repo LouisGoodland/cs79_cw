@@ -40,6 +40,7 @@
     @if ($movement->order < $movements->count() - 1)
         <a href={{ route('move_up', ['session' => $session, 'movement' => $movement]) }}>Move Up</a>
     @endif
+    <a href={{ route('delete.movement', ['session' => $session, 'movement' => $movement]) }}>Delete</a>
     <br>
     
 @endforeach

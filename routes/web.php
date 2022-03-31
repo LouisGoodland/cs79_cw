@@ -25,6 +25,13 @@ Route::get('collect_sessions/{account}', [AccountController::class, 'collect'])
 ->name("collect.sessions");
 //Route that is used to update the movement status
 
+//account creations
+Route::get('/create_account', function () {
+    return view('account_creation');
+})->name('create.account');
+Route::post('/create_account/store', [AccountController::class, 'store'])
+->name("store.account");
+
 //account viewing
 Route::get('/view/{account}', [AccountController::class, 'show'])
 ->name("show.account")->middleware('auth');
@@ -42,10 +49,14 @@ Route::get('view/{session}/edit_session', [SessionController::class, 'create2'])
 ->name("edit.session")->middleware('auth');
 Route::post('view/{session}/edit_session/store', [SessionController::class, 'store2'])
 ->name("edit.session.store")->middleware('auth');
-Route::post('view/{session}/edit_session/add_movement', [SessionController::class, 'store3'])
-->name("add.movement")->middleware('auth');
 Route::get('/view/{session}/delete', [SessionController::class, 'destroy'])
 ->name("destroy.session")->middleware('auth');
+
+//adding and deleting of movements
+Route::post('view/{session}/edit_session/add_movement', [SessionController::class, 'store3'])
+->name("add.movement")->middleware('auth');
+Route::get('view/{session}/edit_session/delete_movement', [SessionController::class, 'delete_movement'])
+->name("delete.movement")->middleware('auth');
 
 //moving order of movements
 Route::get('view/{session}/{movement}/down', [SessionController::class, 'move_down'])
