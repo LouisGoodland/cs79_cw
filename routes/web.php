@@ -34,35 +34,35 @@ Route::post('/create_account/store', [AccountController::class, 'store'])
 
 //account viewing
 Route::get('/view/{account}', [AccountController::class, 'show'])
-->name("show.account")->middleware('auth');
+->name("show.account");
 Route::get('/view/redirect/{session}', [SessionController::class, 'redirect_to_account'])
-->name("session.redirect")->middleware('auth');
+->name("session.redirect");
 
 //initial session creation
 Route::get('view/{account}/add_session', [SessionController::class, 'create'])
-->name("create.session")->middleware('auth');
+->name("create.session");
 Route::post('view/{account}/add_session/store', [SessionController::class, 'store'])
-->name("store.session")->middleware('auth');
+->name("store.session");
 
 //session manipulation
 Route::get('view/{session}/edit_session', [SessionController::class, 'create2'])
-->name("edit.session")->middleware('auth');
+->name("edit.session");
 Route::post('view/{session}/edit_session/store', [SessionController::class, 'store2'])
-->name("edit.session.store")->middleware('auth');
+->name("edit.session.store");
 Route::get('/view/{session}/delete', [SessionController::class, 'destroy'])
-->name("destroy.session")->middleware('auth');
+->name("destroy.session");
 
 //adding and deleting of movements
 Route::post('view/{session}/edit_session/add_movement', [SessionController::class, 'store3'])
-->name("add.movement")->middleware('auth');
+->name("add.movement");
 Route::get('view/{session}/edit_session/delete_movement', [SessionController::class, 'delete_movement'])
-->name("delete.movement")->middleware('auth');
+->name("delete.movement");
 
 //moving order of movements
 Route::get('view/{session}/{movement}/down', [SessionController::class, 'move_down'])
-->name("move_down")->middleware('auth');
+->name("move_down");
 Route::get('view/{session}/{movement}/up', [SessionController::class, 'move_up'])
-->name("move_up")->middleware('auth');
+->name("move_up");
 
 Route::get('/dashboard', function () {
     return view('dashboard');
