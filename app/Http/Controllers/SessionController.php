@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Account;
 use App\Models\Session;
 use App\Models\Movement;
+use App\Models\ForceActivity;
 
 class SessionController extends Controller
 {
@@ -42,9 +43,11 @@ class SessionController extends Controller
     {
         $movements = Movement::where('session_id', $session->id)->
         orderBy('order', 'ASC')->get();
+        $force_activity = ForceActivity::where('session_id', $session->id)->first();
         $account = Account::where('id', $session->account_id);
         return view('create_session2', 
-        ['session' => $session, 'account' => $account, 'movements' => $movements]);
+        ['session' => $session, 'account' => $account, 'movements' => $movements,
+        'forceActivity' => $force_activity]);
     }
 
     /**
@@ -108,6 +111,34 @@ class SessionController extends Controller
         $m->order = Movement::where('session_id', $session->id)->count();
 
         $m->save();
+        return redirect(route('edit.session', ['session' => $session]));
+    }
+
+    public function store4(Request $request, Session $session)
+    {
+        $validated_content = $request->validate([
+            'min' => 'required',
+            'max' => 'required',
+            'time' => 'required'
+        ]);
+
+        if(ForceActivity::where('session_id', $session->id)->count() < 1)
+        {
+            $f = new ForceActivity;
+        } else {
+            $f = ForceActivity::where('session_id', $session->id)->first();
+        }
+        
+        if($validated_content['max'] < $validated_content['min']){
+            $validated_content['max'] = $validated_content['min'];
+        }
+
+        $f->session_id = $session->id;
+        $f->time = $validated_content['time'];
+        $f->lower_threashold = $validated_content['min'];
+        $f->upper_threashold = $validated_content['max'];
+        $f->save();
+
         return redirect(route('edit.session', ['session' => $session]));
     }
 

@@ -24,4 +24,9 @@ class Session extends Model
     {
         return $this->hasMany(Movement::class);
     }
+
+    public function forceActivity()
+    {
+        return $this->hasOne(forceActivity::class);
+    }
 }

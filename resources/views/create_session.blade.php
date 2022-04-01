@@ -15,6 +15,7 @@
             <select name="task_type">
                 <option value="0">Kit</option>
                 <option value="1">Phone</option>
+                <option value="2">forceActivity</option>
             </select>
     </div>
     <div class="row">
