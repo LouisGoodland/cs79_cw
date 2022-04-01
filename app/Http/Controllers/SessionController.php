@@ -99,13 +99,32 @@ class SessionController extends Controller
             $session->message = $request->message;
         }
         
-        //$session->task_type = $validated_content['task_type'];
-        //$session->session_time = $validated_content['time'];
-        //$session->message = $validated_content['message'];
         $session->save();
         
         return redirect(route('edit.session', ['session' => $session]));
     }
+
+    public function setMessage(Request $request, Session $session)
+    {
+        $validated_content = $request->validate([
+            'message' => 'required'
+        ]);
+        $session->message = $validated_content['message'];
+        $session->save();
+        return redirect(route('edit.session', ['session' => $session]));
+    }
+
+    public function setMessage2(Request $request, Session $session)
+    {
+        $validated_content = $request->validate([
+            'message' => 'required'
+        ]);
+        $session->message = $validated_content['message'];
+        $session->save();
+        $account = Account::where('id', $session->account_id)->first();
+        return redirect(route('show.account', ['account' => $account]));
+    }
+
 
     public function store3(Request $request, Session $session)
     {
@@ -185,15 +204,12 @@ class SessionController extends Controller
     public function delete_movement(Session $session, Movement $movement)
     {
         $movements_to_go_down = Movement::where('session_id', $session->id)
-        ->where('order', '>', $movement->order);
-
-        foreach($movements_to_go_down as $m)
-        {
-            $m->order = $m->order - 1;
-            $m->save();
-        }
+        ->where('order', '>', $movement->order)
+        ->decrement('order');
 
         $movement->delete();
+        return redirect(route('edit.session', ['session' => $session]));
+
     }
 
     /**

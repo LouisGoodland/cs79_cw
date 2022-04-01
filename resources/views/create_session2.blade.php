@@ -1,14 +1,14 @@
 <h1>Edit Session:</h1>
 
+<p>Session on: {{$session->session_date}} at: {{$session->session_time}}</p>
 <form method="POST" action={{ route('edit.session.store', ['session' => $session]) }} enctype="multipart/form-data">
     @csrf
-
     <div class="row">
-        <p>Date of Session:   <input type="date" name="date"></p>
+        <p>Date of Session:   <input type="date" name="date" value="{{$session->session_date}}"></p>
     </div>
 
     <div class="row">
-        <p>Time of Session:   <input type="time" name="time"></p>
+        <p>Time of Session:   <input type="time" name="time" value="{{$session->session_time}}"></p>
     </div>
     
     <div class="row">
@@ -22,13 +22,16 @@
     <div class="row">
         <br>
     </div>
-    <p>Message:     <input type="text" name="message"></p>
-    <br>
-
     <input type="submit" value="Apply Changes">
-
+    <br>
 </form>
 
+<p> Current Feedback: {{$session->message}}</p>
+<form method="POST" action={{ route('store.message1', ['session' => $session]) }} enctype="multipart/form-data">
+    @csrf
+    <p>Feedback:     <input type="text" name="message"></p>
+    <input type="submit" value="Set Feedback">
+</form>
 
 
 @if ($session->task_type == 2)
@@ -36,7 +39,14 @@
     @if($forceActivity != null)
         <p>Min force: {{$forceActivity->lower_threashold}} Max Force: {{$forceActivity->upper_threashold}}
              Duration: {{$forceActivity->time}}</p>
-    @endif
+        <form method="POST" action={{ route('store.force.activity', ['session' => $session]) }} enctype="multipart/form-data">
+            @csrf
+            <p>Min value: <input type="number" name="min" min="0" max="1" step="0.01" value="{{$forceActivity->lower_threashold}}"></p>
+            <p>Max value: <input type="number" name="max" min="0" max="1" step="0.01" value="{{$forceActivity->upper_threashold}}"></p>
+            <p>Time: <input type="number" name="time" min="1" max="60" step="1" value="{{$forceActivity->time}}"></p>
+            <input type="submit" value="Set">
+        </form>
+    @else
     <form method="POST" action={{ route('store.force.activity', ['session' => $session]) }} enctype="multipart/form-data">
         @csrf
         <p>Min value: <input type="number" name="min" min="0" max="1" step="0.01"></p>
@@ -44,6 +54,7 @@
         <p>Time: <input type="number" name="time" min="1" max="60" step="1"></p>
         <input type="submit" value="Set">
     </form>
+    @endif
 
 @else
     @foreach ($movements as $movement)

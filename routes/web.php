@@ -51,13 +51,18 @@ Route::get('/view/{session}/delete', [SessionController::class, 'destroy'])
 //adding and deleting of movements
 Route::post('view/{session}/edit_session/add_movement', [SessionController::class, 'store3'])
 ->name("add.movement");
-Route::get('view/{session}/edit_session/delete_movement', [SessionController::class, 'delete_movement'])
+Route::get('view/{session}/edit_session/{movement}/delete_movement', [SessionController::class, 'delete_movement'])
 ->name("delete.movement");
 
 //the setting of force activities:
 Route::post('view/{session}/edit_session/set_force_activity', [SessionController::class, 'store4'])
 ->name("store.force.activity");
 
+//setting messages
+Route::post('view/{session}/edit_session/update_message', [SessionController::class, 'setMessage'])
+->name("store.message1");
+Route::post('/view/{session}/update_message', [SessionController::class, 'setMessage2'])
+->name("store.message2");
 
 //moving order of movements
 Route::get('view/{session}/{movement}/down', [SessionController::class, 'move_down'])
