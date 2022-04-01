@@ -14,19 +14,27 @@ class SessionController extends Controller
     {
         $session->session_status = 'Complete';
         $session->save();
-        return $session->toJson();
+
+        $s = Session::where('id', $session->id)->
+        with('movements')->with('forceActivity')->get();
+        return $s->toJson();
     }
 
     public function update_status_doing(Session $session)
     {
         $session->session_status = 'Started';
         $session->save();
-        return $session->toJson();
+
+        $s = Session::where('id', $session->id)->
+        with('movements')->with('forceActivity')->get();
+        return $s->toJson();
     }
 
     public function collect_session(Session $session)
     {
-        return $session->toJson();
+        $s = Session::where('id', $session->id)->
+        with('movements')->with('forceActivity')->get();
+        return $s->toJson();
     }
 
     /**

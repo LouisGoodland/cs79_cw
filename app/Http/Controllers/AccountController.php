@@ -42,7 +42,7 @@ class AccountController extends Controller
     public function collect(Account $account)
     {
         $sessions = Session::where('account_id', $account->id)->
-        with('movements')->get();
+        with('movements')->with('forceActivity')->get();
         return $sessions->toJson();
     }
 

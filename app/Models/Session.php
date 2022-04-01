@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Session extends Model
 {
     use HasFactory;
@@ -27,6 +28,6 @@ class Session extends Model
 
     public function forceActivity()
     {
-        return $this->hasOne(forceActivity::class);
+        return $this->hasOne(ForceActivity::class);
     }
 }
